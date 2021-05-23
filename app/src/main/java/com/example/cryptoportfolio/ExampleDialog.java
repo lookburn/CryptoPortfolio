@@ -15,9 +15,9 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 public class ExampleDialog extends AppCompatDialogFragment implements AdapterView.OnItemSelectedListener {
-    private EditText editTextPassword;
+    private EditText editTextAmount;
     private ExampleDialogListener listener;
-    private Spinner editTextUsername;
+    private Spinner cryptoSpinner;
 
     private String cryptoSelection;
 
@@ -45,24 +45,24 @@ public class ExampleDialog extends AppCompatDialogFragment implements AdapterVie
                     public void onClick(DialogInterface dialog, int which) {
                         // pull text out
                         // get item at position??
-                        String username = cryptoSelection;
-                        String password = editTextPassword.getText().toString();
+                        String cryptoSpinner = cryptoSelection;
+                        String amount = editTextAmount.getText().toString();
 
-                        // allows username and password to be pulled into main and used there
-                        listener.saveData(username, password);
+                        // allows cryptoSpinner and amount to be pulled into main and used there
+                        listener.saveData(cryptoSpinner, amount);
                     }
                 });
 
-        editTextUsername = (Spinner) view.findViewById(R.id.edit_username);
-        editTextPassword = (EditText) view.findViewById(R.id.edit_password);
+        cryptoSpinner = (Spinner) view.findViewById(R.id.crypto_spinner);
+        editTextAmount = (EditText) view.findViewById(R.id.edit_amount);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.names));
         // tell it its drop down
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // set spinner to adapter
-        editTextUsername.setAdapter(arrayAdapter);
-        editTextUsername.setOnItemSelectedListener(this);
+        cryptoSpinner.setAdapter(arrayAdapter);
+        cryptoSpinner.setOnItemSelectedListener(this);
         return builder.create();
     }
 
@@ -90,6 +90,6 @@ public class ExampleDialog extends AppCompatDialogFragment implements AdapterVie
     }
 
     public interface ExampleDialogListener {
-        void saveData(String username, String password);
+        void saveData(String cryptoSpinner, String amount);
     }
 }

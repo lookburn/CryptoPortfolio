@@ -1,50 +1,31 @@
 package com.example.cryptoportfolio;
 
-import android.app.AlertDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.cryptoportfolio.databinding.ActivityMainBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import com.example.cryptoportfolio.databinding.ActivityMainBinding;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-
-import static android.provider.Telephony.Mms.Part.TEXT;
 
 public class MainActivity extends AppCompatActivity implements ExampleDialog.ExampleDialogListener {
 
     private ActivityMainBinding binding;
 
-    private TextView textViewUsername;
-    private TextView textViewPassword;
+    private TextView textViewCrypto;
+    private TextView textViewAmount;
     private FloatingActionButton addButton;
 
     public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String USERNAME = "username";
-    public static final String PASSWORD = "password";
+    public static final String CRYPTO_SPINNER = "crpyto";
+    public static final String AMOUNT = "1";
 
-    private String username;
-    private String password;
+    private String cryptoSpinner;
+    private String amount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +33,8 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        textViewUsername = (TextView) findViewById(R.id.textview_username);
-        textViewPassword = (TextView) findViewById(R.id.textview_password);
+        textViewCrypto = (TextView) findViewById(R.id.textview_crypto);
+        textViewAmount = (TextView) findViewById(R.id.textview_amount);
 
         setSupportActionBar(binding.toolbar);
 
@@ -76,13 +57,13 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
 
     // save data to local storage
     @Override
-    public void saveData(String username, String password) {
+    public void saveData(String cryptoSpinner, String amount) {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         // save to shared prefernces (local storage)
-        editor.putString(USERNAME, username);
-        editor.putString(PASSWORD, password);
+        editor.putString(CRYPTO_SPINNER, cryptoSpinner);
+        editor.putString(AMOUNT, amount);
 
         editor.apply();
 
@@ -96,14 +77,14 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
 
-        username = sharedPreferences.getString(USERNAME, "default");
-        password = sharedPreferences.getString(PASSWORD, "default");
+        cryptoSpinner = sharedPreferences.getString(CRYPTO_SPINNER, "default");
+        amount = sharedPreferences.getString(AMOUNT, "default");
     }
 
     // update values on the app
     public void updateViews() {
-        textViewUsername.setText(username);
-        textViewPassword.setText(password);
+        textViewCrypto.setText(cryptoSpinner);
+        textViewAmount.setText(amount);
     }
 
 

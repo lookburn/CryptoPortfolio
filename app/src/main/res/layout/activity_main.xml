@@ -21,23 +21,23 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
-        android:id="@+id/textview_username"
+        android:id="@+id/textview_crypto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Username"
+        android:text="Crypto"
         android:textSize="30sp"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true" />
 
     <TextView
-        android:id="@+id/textview_password"
+        android:id="@+id/textview_amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Password"
+        android:text="Amount"
         android:textSize="30sp"
-        android:layout_below="@+id/textview_username"
+        android:layout_below="@+id/textview_crypto"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
         />
