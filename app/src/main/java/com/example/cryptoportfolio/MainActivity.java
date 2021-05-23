@@ -27,6 +27,8 @@ import com.example.cryptoportfolio.databinding.ActivityMainBinding;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 import static android.provider.Telephony.Mms.Part.TEXT;
 
 public class MainActivity extends AppCompatActivity implements ExampleDialog.ExampleDialogListener {
@@ -103,4 +105,6 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
         textViewUsername.setText(username);
         textViewPassword.setText(password);
     }
+
+
 }

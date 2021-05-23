@@ -7,15 +7,19 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-public class ExampleDialog extends AppCompatDialogFragment {
-    private EditText editTextUsername, editTextPassword;
+public class ExampleDialog extends AppCompatDialogFragment implements AdapterView.OnItemSelectedListener {
+    private EditText editTextPassword;
     private ExampleDialogListener listener;
+    private Spinner editTextUsername;
+
+    private String cryptoSelection;
 
     public ExampleDialog() {
     }
@@ -40,7 +44,8 @@ public class ExampleDialog extends AppCompatDialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // pull text out
-                        String username = editTextUsername.getText().toString();
+                        // get item at position??
+                        String username = cryptoSelection;
                         String password = editTextPassword.getText().toString();
 
                         // allows username and password to be pulled into main and used there
@@ -48,9 +53,16 @@ public class ExampleDialog extends AppCompatDialogFragment {
                     }
                 });
 
-        editTextUsername = (EditText) view.findViewById(R.id.edit_username);
+        editTextUsername = (Spinner) view.findViewById(R.id.edit_username);
         editTextPassword = (EditText) view.findViewById(R.id.edit_password);
 
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.names));
+        // tell it its drop down
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // set spinner to adapter
+        editTextUsername.setAdapter(arrayAdapter);
+        editTextUsername.setOnItemSelectedListener(this);
         return builder.create();
     }
 
@@ -64,6 +76,17 @@ public class ExampleDialog extends AppCompatDialogFragment {
         } catch (ClassCastException e) {
             throw new ClassCastException((context.toString() + "must implement ExampleDialogListener"));
         }
+    }
+
+    // selects spinner item
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        cryptoSelection = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
     public interface ExampleDialogListener {
