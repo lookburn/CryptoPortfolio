@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 
@@ -20,6 +21,7 @@ public class ExampleDialog extends AppCompatDialogFragment implements AdapterVie
     private Spinner cryptoSpinner;
 
     private String cryptoSelection;
+    private int cryptoPosition;
 
     public ExampleDialog() {
     }
@@ -49,7 +51,7 @@ public class ExampleDialog extends AppCompatDialogFragment implements AdapterVie
                         String amount = editTextAmount.getText().toString();
 
                         // allows cryptoSpinner and amount to be pulled into main and used there
-                        listener.saveData(cryptoSpinner, amount);
+                        listener.saveData(cryptoPosition, cryptoSpinner, amount);
                     }
                 });
 
@@ -63,6 +65,7 @@ public class ExampleDialog extends AppCompatDialogFragment implements AdapterVie
         // set spinner to adapter
         cryptoSpinner.setAdapter(arrayAdapter);
         cryptoSpinner.setOnItemSelectedListener(this);
+
         return builder.create();
     }
 
@@ -82,6 +85,7 @@ public class ExampleDialog extends AppCompatDialogFragment implements AdapterVie
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         cryptoSelection = parent.getItemAtPosition(position).toString();
+        cryptoPosition = position;
     }
 
     @Override
@@ -90,6 +94,6 @@ public class ExampleDialog extends AppCompatDialogFragment implements AdapterVie
     }
 
     public interface ExampleDialogListener {
-        void saveData(String cryptoSpinner, String amount);
+        void saveData(int position, String cryptoSpinner, String amount);
     }
 }
