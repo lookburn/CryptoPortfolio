@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements ExampleDialog.ExampleDialogListener {
 
@@ -26,12 +27,12 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
 
     public static final String SHARED_PREFS = "sharedPrefs";
 //    public static final String[] CRYPTO_SPINNER = new String[3];
-//    public static final Double[] AMOUNT = new Double[3];
-    public static final String CRYPTO_SPINNER = "crypto";
-    public static final String AMOUNT = "1";
+//    public static final Double[] AMOUNFT = new Double[3];
+    public static final String AMOUNT = "0,0,0";
 
     private String cryptoSpinner;
-    private String amount;
+    public String[] crypto;
+    private String[] amount;
     private ArrayList<ExampleItem> exampleList;
 
     private RecyclerView mRecyclerView;
@@ -43,6 +44,10 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // initialise amount
+        amount = new String[]{"0","0","0"};
+        crypto = new String[]{"BTC","ETH","ADA"};
 
         // initialise recyclerview
         exampleList = new ArrayList<>();
@@ -67,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
             }
         });
 
+        // for first run through; need to pre-load
         loadData();
         updateViews();
     }
@@ -82,13 +88,27 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        /* TODO:
+                saves only one var, not array
+                data is there but doesn't preload on recyclerview
+
+        */
         // save to shared preferences (local storage)
-        editor.putString(CRYPTO_SPINNER, cryptoSpinner);
-        editor.putString(AMOUNT, amount);
+//        editor.putString(CRYPTO_SPINNER[position], cryptoSpinner);
+
+        // turn AMOUNT into array
+        String[] ar = sharedPreferences.getString(AMOUNT, "0,0,0").split(",");
+        // change value
+        ar[position] = amount;
+        // turn back into string
+        // update prefs
+        // amount = [0,0,0], so need to remove first and last char before updating pref
+        String amountPref = Arrays.toString(ar);
+        editor.putString(AMOUNT, amountPref.substring( 1, amountPref.length() - 1 ));
 
         editor.apply();
 
-        Toast.makeText(this, sharedPreferences.getString(CRYPTO_SPINNER, "default") + " added", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, amount + " of " + crypto[position] + " @ " + position + " added", Toast.LENGTH_SHORT).show();
 
         loadData();
         updateViews();
@@ -98,17 +118,40 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
 
-        cryptoSpinner = sharedPreferences.getString(CRYPTO_SPINNER, "default");
-        amount = sharedPreferences.getString(AMOUNT, "default");
+        String amountPref = sharedPreferences.getString(AMOUNT,"0,0,0");
+
+        System.out.println("PRESUBSTRING..."+amountPref);
+
+        // replace whitespace
+        amountPref = amountPref.replaceAll("\\s+","");
+
+        System.out.println(amountPref);
+
+        // turn AMOUNT into array
+        String[] ar = amountPref.split(",");
+
+        System.out.println("LEN..." + amount.length + " AND " + ar.length + " OF " + ar[0]+ar[1]);
+
+        for (int i = 0; i < 3; i++) { // TODO: MAGIC NUMBER
+//            cryptoSpinner = sharedPreferences.getString(CRYPTO_SPINNER[i], "default");
+            amount[i] = ar[i];
+        }
     }
 
-    // update values on the app
+    // update recycler view
     public void updateViews() {
-        // update recycler view
-        exampleList.add(new ExampleItem(R.drawable.ic_baseline_add_24, cryptoSpinner, amount));
+        for (int i = 0; i < 3; i++) { // TODO: MAGIC NUMBER
+            if (Integer.parseInt(amount[i]) > 0) {
+                Toast.makeText(this, "loading data..." + amount[i] + " of " + crypto[i] + "...", Toast.LENGTH_SHORT).show();
+                exampleList.add(new ExampleItem(R.drawable.ic_baseline_add_24, crypto[i], amount[i]));
+            }
+        }
 
 //        textViewCrypto.setText(cryptoSpinner);
 //        textViewAmount.setText(amount);
+
+        Toast.makeText(this, "updating view..."+exampleList.size(), Toast.LENGTH_SHORT).show();
+
     }
 
 
