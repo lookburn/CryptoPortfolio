@@ -140,15 +140,21 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
 
     // update recycler view
     public void updateViews() {
+        // clear adapterList & remove current recyclerview items
+        exampleList.clear();
+        mRecyclerView.removeAllViews();
+        Toast.makeText(this, "list size = "+exampleList.size(), Toast.LENGTH_SHORT).show();
+        // update view
         for (int i = 0; i < 3; i++) { // TODO: MAGIC NUMBER
+            // for each loaded amount, if > 0: add to list
             if (Integer.parseInt(amount[i]) > 0) {
                 Toast.makeText(this, "loading data..." + amount[i] + " of " + crypto[i] + "...", Toast.LENGTH_SHORT).show();
                 exampleList.add(new ExampleItem(R.drawable.ic_baseline_add_24, crypto[i], amount[i]));
             }
         }
 
-//        textViewCrypto.setText(cryptoSpinner);
-//        textViewAmount.setText(amount);
+        //update the recyclerview
+        mAdapter.notifyDataSetChanged();
 
         Toast.makeText(this, "updating view..."+exampleList.size(), Toast.LENGTH_SHORT).show();
 
