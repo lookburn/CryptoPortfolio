@@ -26,11 +26,8 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
     private FloatingActionButton addButton;
 
     public static final String SHARED_PREFS = "sharedPrefs";
-//    public static final String[] CRYPTO_SPINNER = new String[3];
-//    public static final Double[] AMOUNFT = new Double[3];
     public static final String AMOUNT = "0,0,0";
 
-    private String cryptoSpinner;
     public String[] crypto;
     private String[] amount;
     private ArrayList<ExampleItem> exampleList;
@@ -52,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
         // initialise recyclerview
         exampleList = new ArrayList<>();
         mRecyclerView = findViewById(R.id.recyclerView);
-//        mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new ExampleAdapter(exampleList);
 
@@ -88,18 +84,12 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        /* TODO:
-                saves only one var, not array
-                data is there but doesn't preload on recyclerview
-
-        */
-        // save to shared preferences (local storage)
-//        editor.putString(CRYPTO_SPINNER[position], cryptoSpinner);
-
         // turn AMOUNT into array
         String[] ar = sharedPreferences.getString(AMOUNT, "0,0,0").split(",");
+
         // change value
         ar[position] = amount;
+
         // turn back into string
         // update prefs
         // amount = [0,0,0], so need to remove first and last char before updating pref
@@ -120,17 +110,11 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
 
         String amountPref = sharedPreferences.getString(AMOUNT,"0,0,0");
 
-        System.out.println("PRESUBSTRING..."+amountPref);
-
         // replace whitespace
         amountPref = amountPref.replaceAll("\\s+","");
 
-        System.out.println(amountPref);
-
         // turn AMOUNT into array
         String[] ar = amountPref.split(",");
-
-        System.out.println("LEN..." + amount.length + " AND " + ar.length + " OF " + ar[0]+ar[1]);
 
         for (int i = 0; i < 3; i++) { // TODO: MAGIC NUMBER
 //            cryptoSpinner = sharedPreferences.getString(CRYPTO_SPINNER[i], "default");
