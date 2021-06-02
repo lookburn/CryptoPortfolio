@@ -47,11 +47,11 @@ public class ExampleDialog extends AppCompatDialogFragment implements AdapterVie
                     public void onClick(DialogInterface dialog, int which) {
                         // pull text out
                         // get item at position??
-                        String cryptoSpinner = cryptoSelection;
+//                        String cryptoSpinner = cryptoSelection;
                         String amount = editTextAmount.getText().toString();
 
                         // allows cryptoSpinner and amount to be pulled into main and used there
-                        listener.saveData(cryptoPosition, cryptoSpinner, amount);
+                        listener.saveData(cryptoPosition, amount);
                     }
                 });
 
@@ -94,6 +94,6 @@ public class ExampleDialog extends AppCompatDialogFragment implements AdapterVie
     }
 
     public interface ExampleDialogListener {
-        void saveData(int position, String cryptoSpinner, String amount);
+        void saveData(int position, String amount);
     }
 }

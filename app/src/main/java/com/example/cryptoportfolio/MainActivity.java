@@ -17,7 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements ExampleDialog.ExampleDialogListener {
+public class MainActivity extends AppCompatActivity implements ExampleDialog.ExampleDialogListener, ExampleAdapter.ExampleAdapterListener {
 
     private ActivityMainBinding binding;
 
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
 
     // save data to local storage
     @Override
-    public void saveData(int position, String cryptoSpinner, String amount) {
+    public void saveData(int position, String amount) {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -137,12 +137,15 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
             }
         }
 
-        //update the recyclerview
+        // notify change to recyclerview adapter
         mAdapter.notifyDataSetChanged();
 
         Toast.makeText(this, "updating view..."+exampleList.size(), Toast.LENGTH_SHORT).show();
 
     }
 
-
+    @Override
+    public void removeCrypto(int position) {
+        saveData(position, "0");
+    }
 }
