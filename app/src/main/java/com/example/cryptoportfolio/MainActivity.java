@@ -88,7 +88,8 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
         String[] ar = sharedPreferences.getString(AMOUNT, "0,0,0").split(",");
 
         // change value
-        ar[position] = amount;
+        // change to int and add, then back to string
+        ar[position] = String.valueOf(Integer.parseInt(amount) + Integer.parseInt(ar[position]));
 
         // turn back into string
         // update prefs
